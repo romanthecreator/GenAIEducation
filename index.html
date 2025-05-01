@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Generative AI in Education</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.3)), url('https://media-hosting.imagekit.io/a1c4683b410e4e7c/robot%20photo%202.PNG?Expires=1839342651&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=N-QJUeYzYr67j1dYqkhhK6bx3moAM5cFotoYbcWsqK-S7FDabt2jg0P0gVW09M-CjUXQtOayGqtBm3W7Y2vxib1X2P49K4yTa203BzVS16k0iIb1oVALkR3t77MtHReRBSO8G~Hz~uQCofXHKibDpOSXw5mg932V9fxbRUW~oUKhnUp~7pEFAZQGX0EaGe7eGKJy7W8w56QSQf-3hALjDQHYQ4rVzRXDxUrdFtGZF8uslKXTvMA147LDMEFuaNIPIvZFBABgeXo9wI2IxLY15YyR0hk8DhnWJ-n1xpx1gfKmsvOXCIlHnMqmOyTbExaVmO3U5FayeFy7VjmhIGs72g__') no-repeat center center fixed;
+      background-size: cover;
+      color: #f0f0f0;
+      scroll-behavior: smooth;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      background-color: rgba(0, 0, 0, 0.9);
+      padding: 15px 0;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      flex-wrap: wrap;
+    }
+
+    nav button {
+      background: #111;
+      color: white;
+      border: 1px solid white;
+      padding: 12px 25px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    nav button:hover {
+      background: #00ff88;
+      color: #000;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .hero {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 60px 20px;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding-top: 120px;
+    }
+
+    h1 {
+      font-size: 60px;
+      line-height: 1.2;
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .highlight {
+      color: #828fff;
+    }
+
+    .tagline {
+      margin-top: 30px;
+      font-size: 26px;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 4px;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .cta-button {
+      margin-top: 25px;
+      padding: 14px 32px;
+      font-size: 18px;
+      background-color: #828fff;
+      color: #000;
+      border: 1px solid white;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .cta-button:hover {
+      background-color: #6f77e6;
+    }
+
+    section {
+      padding: 80px 20px;
+      background-color: rgba(0, 0, 0, 0.85);
+      border-top: 1px solid #222;
+      color: #f0f0f0;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 1s ease;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    section h2 {
+      font-size: 36px;
+      color: #828fff;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    section p, section ul {
+      max-width: 800px;
+      margin: 0 auto;
+      font-size: 18px;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    ul li {
+      margin-bottom: 10px;
+    }
+
+    .sub-section h3 {
+      font-size: 30px;
+      color: #828fff;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .sub-section p {
+      font-size: 18px;
+      color: #f0f0f0;
+      text-align: center;
+    }
+
+    .ai-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(0, 0, 0, 0.85);
+      border: 2px solid #828fff;
+      border-radius: 5px;
+      width: 250px;
+      padding: 10px;
+      text-align: center;
+      z-index: 999;
+    }
+
+    .ai-menu a {
+      color: #f0f0f0;
+      text-decoration: none;
+      font-size: 18px;
+      display: block;
+      margin: 10px 0;
+      padding: 8px 0;
+      transition: background-color 0.3s;
+    }
+
+    .ai-menu a:hover {
+      background-color: #828fff;
+      color: black;
+    }
+
+    .close-menu {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      font-size: 18px;
+      color: #f0f0f0;
+      cursor: pointer;
+    }
+
+    footer {
+      background-color: rgba(0, 0, 0, 0.9);
+      color: white;
+      text-align: center;
+      padding: 20px 10px;
+      border-top: 1px solid #333;
+    }
+
+    footer a {
+      color: #828fff;
+      text-decoration: none;
+      margin: 0 10px;
+      transition: color 0.3s;
+    }
+
+    footer a:hover {
+      color: #ffffff;
+    }
+
+    a:link, a:visited {
+      color: white;
+    }
+
+    a:hover, a:active {
+      color: #828fff;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 50px;
+      }
+
+      .tagline {
+        font-size: 22px;
+      }
+
+      nav button {
+        padding: 8px 16px;
+        font-size: 14px;
+      }
+
+      .cta-button {
+        font-size: 16px;
+        padding: 12px 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <button onclick="scrollToSection('about')">About</button>
+    <button onclick="scrollToSection('ai-features')">AI Features</button>
+    <button onclick="scrollToSection('lesson-plans')">Lesson Plans</button>
+    <button onclick="scrollToSection('homework-assignments')">Homework Assignments</button>
+    <button onclick="scrollToSection('citations')">Citations</button>
+  </nav>
+
+  <div class="hero">
+    <h1>Generative AI<br><span class="highlight">in Education</span></h1>
+    <p class="tagline">Improving education, one prompt at a time</p>
+    <button class="cta-button" onclick="document.querySelector('.ai-menu').style.display='block'">Get Started</button>
+
+    <div class="ai-menu">
+      <span class="close-menu" onclick="document.querySelector('.ai-menu').style.display='none'">X</span>
+      <a href="https://chat.openai.com" target="_blank">ChatGPT</a>
+      <a href="https://khanmigo.ai" target="_blank">Khanmigo.ai</a>
+      <a href="https://www.carnegielearning.com/" target="_blank">Carnegie Learning</a>
+    </div>
+  </div>
+
+  
+
+    <div class="ai-menu">
+      <span class="close-menu" onclick="document.querySelector('.ai-menu').style.display='none'">X</span>
+      <a href="https://chat.openai.com" target="_blank">ChatGPT</a>
+      <a href="https://khanmigo.ai" target="_blank">Khanmigo.ai</a>
+      <a href="https://www.carnegielearning.com/" target="_blank">Carnegie Learning</a>
+    </div>
+  </div>
+
+  <section id="about">
+    <h2>About</h2>
+    <p>We're revolutionizing how educators and students deepen their education by utilizing the power of Generative AI. Whether it's personalized learning, lesson planning, or smart tutoring, we are showing that AI can improve education.</p>
+
+    <div class="sub-section">
+      <h3>About Us</h3>
+      <p>We are Roman and Badriya we are advocating for artificial intelligence to be a part of education. We are from Desert Oasis High School, and we are exploring the benefits that artificial intelligence can potntially provide towards education. Using this website, our goal is to spread the word about AI! </p>
+    </div>
+
+    <div class="sub-section">
+      <h3>About Generative AI</h3>
+      <p>Artificial intelligence is a field of technology that uses algorithms to perform tasks that usually require human intelligence.</p>
+      <p>AI can enhance education by providing personalized learning experiences, real-time feedback, and supporting teachers with lesson planning.</p>
+    </div>
+  </section>
+
+  <section id="ai-features">
+    <h2>AI Features</h2>
+
+   <div class="sub-section">
+  <h3>Personalized Learning Experiences</h3>
+  <p>Artificial intelligence (AI) offers personalized learning experiences by tailoring educational content and support to meet the unique needs of each student. This individualized approach of learning enhances engagement and improves learning outcomes.</p>
+  <p><span style="color: #828fff;"><strong>In a classroom, this might look like:</strong></span></p>
+  <ul>
+    <li><strong>Adaptive Learning Pathways:</strong> A student working on math problems sees the difficulty level automatically adjust based on their performance. If they struggle with a certain concept, the system offers additional explanations and simpler problems to reinforce understanding. On the other hand, if they answer questions correctly, they move on to more challenging tasks to keep them engaged and challenged.</li>
+    <li><strong>Real-Time Virtual Tutoring:</strong> A student engages in a lesson where they receive immediate, tailored feedback. If they have difficulty understanding a particular concept, the system offers a breakdown or examples to help clarify. The pace of the lesson adjusts based on the student's progress, providing more support where needed or offering advanced material when the student is ready to move forward.</li>
+    <li><strong>Personalized Study Plans:</strong> A student receives a study plan tailored to their specific learning needs based on recent performance in tests or quizzes. The system identifies areas where the student needs more practice and offers targeted exercises or content to improve those skills. It adapts as the student progresses, ensuring they focus on what’s most relevant to their learning journey.</li>
+  </ul>
+</div>
+
+
+    <div class="sub-section">
+      <h3>Instant Feedback</h3>
+      <p>AI can provide students with instant feedback. This is where students receive immediate guidance on their work. For example, right after they submit a quiz, solve a problem, or draft an answer. This is also beneficial to teachers, because students do not have to rely only on teachers to support them. By pointing out errors and offering hints on the spot, it helps students correct misconceptions before they become habits. Ultimately, it frees teachers from routine grading so they can focus on deeper, more personalized instruction.</p>
+    </div>
+
+    <div class="sub-section">
+      <h3>Increased Accessibility to Learning Resources</h3>
+      <p>AI increases accessibility to learning resources by providing students with a wide range of tools and materials that are available anytime and anywhere. With AI-driven platforms, students can access personalized content tailored to their learning needs, including interactive lessons, videos, quizzes, and more. These platforms often include features like text-to-speech and language translation, making learning more inclusive for students with disabilities or those who speak different languages. Additionally, AI can create adaptive learning environments that adjust to each student's progress, ensuring that all learners, regardless of location or ability, can access resources that suit their learning pace and style.</p>
+    </div>
+  </section>
+
+  <section id="lesson-plans">
+    <h2>Lesson Plans</h2>
+    <p>Here are two lesson plans that you can access:</p>
+    <ul>
+      <li><a href="https://docs.google.com/document/d/16eZWo_b-bdWd0Gj0MurYG9t9hwEGWVypAwBAyTBBBr4/edit?usp=sharing" target="_blank">Algebra II Lesson Plan</a></li>
+      <li><a href="https://docs.google.com/document/d/1S8xmAb50TRsJKVGpKV7sBeUGNyoKeppcQyEiJvQMpsI/edit?usp=sharing" target="_blank">Chemistry Lesson Plan</a></li>
+    </ul>
+  </section>
+
+  <section id="homework-assignments">
+    <h2>Homework Assignments</h2>
+    <ul>
+      <li><a href="https://docs.google.com/document/d/1f7z7VMjphEeLe8v-efn56z9FLloWjDnIEm_b_ZkBC3E/edit?usp=sharing" target="_blank">Algebra II Homework Assignment</a></li>
+      <li><a href="https://docs.google.com/document/d/13BupPvhbwHOZHD1ciImvZMaJ1hbU90vl-P06JAf1qtc/edit?usp=sharing" target="_blank">Chemistry Homework Assignment</a></li>
+      <li><a href="https://docs.google.com/document/d/1rT4asLNkrmkCw9KeDz2D1N5Bl-CA1DDWz8y4gtxNezU/edit?usp=sharing" target="_blank">Algebra II Answer Key</a></li>
+      <li><a href="https://docs.google.com/document/d/1fvi0YHjoA5a19YAkhC5BUcIWi2OGCicsYVkH1h3L0eE/edit?usp=sharing" target="_blank">Chemistry Answer Key</a></li>
+    </ul>
+  </section>
+
+    <section id="citations">
+  <h2>Citations</h2>
+  <p></p>
+  <ul>
+    <li><a href="https://www.cde.ca.gov" target="_blank">California Department of Education - AI in California</a></li>
+    <li><a href="https://www.forbes.com/sites/joemckendrick/2023/07/16/ai-may-or-may-not-be-able-to-mimic-human-creativity-but-certainly-can-boost-it/" target="_blank">https://www.forbes.com/sites/joemckendrick/2023/07/16/ai-may-or-may-not-be-able-to-mimic-human-creativity-but-certainly-can-boost-it/</a></li>
+    <li><a href="https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0317471&form=MG0AV3&form=MG0AV3#sec011" target="_blank">https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0317471&form=MG0AV3&form=MG0AV3#sec011</a></li>
+    <li><a href="https://www.sciencedirect.com/science/article/pii/S2666920X23000772#sec5" target="_blank">https://www.sciencedirect.com/science/article/pii/S2666920X23000772#sec5</a></li>
+    <li><a href="https://link.springer.com/article/10.1186/s41239-019-0171-0" target="_blank">https://link.springer.com/article/10.1186/s41239-019-0171-0</a></li>
+    <li><a href="https://hai.stanford.edu/news/ai-will-transform-teaching-and-learning-lets-get-it-right" target="_blank">https://hai.stanford.edu/news/ai-will-transform-teaching-and-learning-lets-get-it-right</a></li>
+    <li><a href="https://urbeuniversity.edu/blog/the-future-benefits-of-artificial-intelligence-for-students" target="_blank">https://urbeuniversity.edu/blog/the-future-benefits-of-artificial-intelligence-for-students</a></li>
+    <li><a href="https://www.waldenu.edu/programs/education/resource/five-pros-and-cons-of-ai-in-the-education-sector" target="_blank">Walden University - https://www.waldenu.edu/programs/education/resource/five-pros-and-cons-of-ai-in-the-education-sector</a></li>
+  </ul>
+</section>
+  <style>
+   a:link {
+color: white; /* unvisited link */
+}
+a:visited {
+color: white; /* visited link */
+}
+a:hover {
+color: #828fff; /* mouse over link */
+}
+a:active {
+color: #828fff; /* selected link */
+}
+</style>
+</head>
+<body>
+
+
+  <footer>
+        <span>&copy; 2025 Roman & Badriya</span> |
+        <a href="https://substack.com/@romancabras" target="_blank">Contact Us</a> |
+        <a href="#">Back to Top</a>
+    </footer>
+
+  <!-- Scripts -->
+  <script>
+    function scrollToSection(id) {
+      const section = document.getElementById(id);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        console.warn(`Section with id "${id}" not found.`);
+      }
+    }
+
+    const sections = document.querySelectorAll('section');
+    window.addEventListener('scroll', () => {
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= window.innerHeight && rect.bottom >= 0) {
+          section.classList.add('visible');
+        }
+      });
+    });
+  </script>
+          <style>
+      nav button {
+        background: #111;
+        color: white;
+        border: 1px solid white;
+        padding: 12px 25px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      nav button:hover {
+        background: #00BFFF; /* Electric blue background */
+        color: #000;
+        box-shadow: 0 0 30px 12px rgba(0, 191, 255, 1); /* Electric blue glow around the button */
+        text-shadow: 0 0 25px rgba(0, 191, 255, 1), 0 0 40px rgba(0, 191, 255, 0.9); /* Electric blue glow on text */
+      }
+    </style>
+
+<style>
+  nav button {
+    background: #111;
+    color: white;
+    border: 1px solid white;
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  nav button:hover {
+    background: #00BFFF;
+    color: #000;
+    box-shadow: 0 0 30px 12px rgba(0, 191, 255, 1);
+    text-shadow: 0 0 25px rgba(0, 191, 255, 1), 0 0 40px rgba(0, 191, 255, 0.9);
+  }
+
+  /* Specific glow effect for Get Started button */
+  .cta-button {
+    border-color: #00BFFF;
+  }
+
+  .cta-button:hover {
+    background: #00BFFF;
+    color: #000;
+    box-shadow: 0 0 30px 12px rgba(0, 191, 255, 1);
+    text-shadow: 0 0 25px rgba(0, 191, 255, 1), 0 0 40px rgba(0, 191, 255, 0.9);
+  }
+</style>
+
+
+
+
+</body>
+</html>
+
